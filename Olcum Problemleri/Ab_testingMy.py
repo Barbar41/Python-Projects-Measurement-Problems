@@ -1,6 +1,6 @@
-######################################################
-# Temel İstatistik Kavramları
-######################################################
+####################### ####
+# Basic Statistics Concepts
+####################### ####
 
 import itertools
 import numpy as np
@@ -10,274 +10,274 @@ import seaborn as sns
 # !pip install statsmodels
 import statsmodels.stats.api as sms
 from scipy.stats import ttest_1samp, shapiro, levene, ttest_ind, mannwhitneyu, \
-    pearsonr, spearmanr, kendalltau, f_oneway, kruskal
+     pearsonr, spearmanr, kendalltau, f_oneway, kruskal
 from statsmodels.stats.proportion import proportions_ztest
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', 10)
 pd.set_option('display.float_format', lambda x: '%.5f' % x)
 
-############################
-# Sampling (Örnekleme)
-############################
+#############################
+# Sampling
+#############################
 
-# Sayı populasyonumuzu olusturuyoruz
-populasyon = np.random.randint(0, 80, 10000)
-populasyon.mean()
+# We create our number population
+population = np.random.randint(0, 80, 10000)
+population.mean()
 
-# random seed ayarı örnek cekmek için
+# random seed setting to draw samples
 np.random.seed(115)
 
-# Örneklem seçmek için
-orneklem = np.random.choice(a=populasyon, size=100)
-orneklem.mean()
+# To select sample
+sample = np.random.choice(a=population, size=100)
+example.mean()
 
-# Örneklem çekiyor ve seçioruz
+# We sample and select
 np.random.seed(10)
-orneklem1 = np.random.choice(a=populasyon, size=100)
-orneklem2 = np.random.choice(a=populasyon, size=100)
-orneklem3 = np.random.choice(a=populasyon, size=100)
-orneklem4 = np.random.choice(a=populasyon, size=100)
-orneklem5 = np.random.choice(a=populasyon, size=100)
-orneklem6 = np.random.choice(a=populasyon, size=100)
-orneklem7 = np.random.choice(a=populasyon, size=100)
-orneklem8 = np.random.choice(a=populasyon, size=100)
-orneklem9 = np.random.choice(a=populasyon, size=100)
-orneklem10 = np.random.choice(a=populasyon, size=100)
+sample1 = np.random.choice(a=population, size=100)
+sample2 = np.random.choice(a=population, size=100)
+sample3 = np.random.choice(a=population, size=100)
+sample4 = np.random.choice(a=population, size=100)
+sample5 = np.random.choice(a=population, size=100)
+sample6 = np.random.choice(a=population, size=100)
+sample7 = np.random.choice(a=population, size=100)
+sample8 = np.random.choice(a=population, size=100)
+sample9 = np.random.choice(a=population, size=100)
+sample10 = np.random.choice(a=population, size=100)
 
-# Örneklemlerin ortalamasını alalım
-(orneklem1.mean() + orneklem2.mean() + orneklem3.mean() + orneklem4.mean() + orneklem5.mean()
- + orneklem6.mean() + orneklem7.mean() + orneklem8.mean() + orneklem9.mean() + orneklem10.mean()) / 10
+# Take the average of the samples
+(example1.mean() + example2.mean() + example3.mean() + example4.mean() + example5.mean()
+  + example6.mean() + example7.mean() + example8.mean() + example9.mean() + example10.mean()) / 10
 
 
-############################
-# Descriptive Statistics (Betimsel İstatistikler)
-############################
+#############################
+# Descriptive Statistics
+#############################
 
-# seabordan tips veriseti cekıoruz
+# we are pulling tips dataset from seabor
 df = sns.load_dataset("tips")
 df.describe().T
 
 df.head()
 
-# İlgili değişken için güven aralığı hesabı yapmak
+# Calculating the confidence interval for the relevant variable
 sms.DescrStatsW(df["total_bill"]).tconfint_mean()
 
-# Gelecek bahşişler için bir değerlendirme
-sms.DescrStatsW(df["tip"]).tconfint_mean()
+# A review for future tips
+sms.DescrStatsW(df["type"]).tconfint_mean()
 
-# Titanic Veri Setindeki Sayısal Değişkenler için Güven Aralığı Hesabı
+# Confidence Interval Calculation for Numerical Variables in Titanic Data Set
 df = sns.load_dataset("titanic")
 df.describe().T
 
-# İlgili değişken için eksık degerlerı ucurduktan sonra güven aralığı hesabı yapmak
+# Calculating the confidence interval after removing the missing values for the relevant variable
 sms.DescrStatsW(df["age"].dropna()).tconfint_mean()
 
-# İlgili değişken için eksık degerlerı ucurduktan sonra güven aralığı hesabı yapmak
-sms.DescrStatsW(df["fare"].dropna()).tconfint_mean()
+# Calculating the confidence interval after removing the missing values for the relevant variable
+sms.DescrStatsW(df["mouse"].dropna()).tconfint_mean()
 
-######################################################
-# Correlation (Korelasyon)
-######################################################
+####################### ####
+# Correlation
+####################### ####
 
-# Bahşiş veri seti:
-# total_bill: yemeğin toplam fiyatı (bahşiş ve vergi dahil)
-# tip: bahşiş
-# sex: ücreti ödeyen kişinin cinsiyeti (0=male, 1=female)
-# smoker: grupta sigara içen var mı? (0=No, 1=Yes)
-# day: gün (3=Thur, 4=Fri, 5=Sat, 6=Sun)
-# time: ne zaman? (0=Day, 1=Night)
-# size: grupta kaç kişi var?
+# Tip dataset:
+# total_bill: total price of the meal (including tip and tax)
+# type: tip
+# sex: gender of the person paying the fee (0=male, 1=female)
+# smoker: is there anyone in the group who smokes? (0=No, 1=Yes)
+# day: day (3=Thur, 4=Fri, 5=Sat, 6=Sun)
+# time: when? (0=Day, 1=Night)
+# size: how many people are in the group?
 
 df = sns.load_dataset('tips')
 df.head()
 
 
-df["total_bill"] = df["total_bill"] - df["tip"]
+df["total_bill"] = df["total_bill"] - df["type"]
 
-# Saçılım grafiği ile ikisi arasındaki ilişkiyi inceleyelim(pozitif yönlü ,orta sıddetlı bir ilişki var)
-df.plot.scatter("tip", "total_bill")
+# Let's examine the relationship between the two with the scatter plot (there is a positive, moderate relationship).
+df.plot.scatter("type", "total_bill")
 plt.show()
 
-# Matematiksel karşılığı(orta şiddetin biraz üstünde)(iki değişken arasındaki korelasyon gözlemlemesi için kullanırız)
-df["tip"].corr(df["total_bill"])
+# Mathematical equivalent (slightly above moderate intensity) (we use it to observe the correlation between two variables)
+df["type"].corr(df["total_bill"])
 
-############################
-# Uygulama 1: Sigara İçenler ile İçmeyenlerin Hesap Ortalamaları Arasında İstatistik Ol An Fark var mı?
-############################
+#############################
+# Application 1: Is there a statistical difference between the account averages of smokers and non-smokers?
+#############################
 
 df = sns.load_dataset("tips")
 df.head()
 
-# Ikı grubun ortalamalarına bakalım(sigara içip içmeme durumuna göre)
+# Let's look at the averages of the two groups (according to smoking or non-smoking status)
 df.groupby("smoker").agg({"total_bill": "mean"})
-# Arada bir fark varmı var gibi gözüküyor ama istastiki olarak bakalım
+# It seems like there is a difference, but let's look at it statistically.
 
 
-############################
-# 1. Hipotezi Kur
-############################
+#############################
+# 1. Establish Hypothesis
+#############################
 
 # H0: M1 = M2(
 # H1: M1 != M2
 
-############################
-# 2. Varsayım Kontrolü
-############################
+#############################
+#2. Assumption Checking
+#############################
 
-# Normallik Varsayımı:Bir değişkenin dagılımının standart normal dağılımına benzer olup olmadıgının hipotez testidir.
-# Varyans Homojenliği:
+# Normality Assumption: It is a hypothesis test of whether the distribution of a variable is similar to the standard normal distribution.
+# Variance Homogeneity:
 
-############################
-# Normallik Varsayımı
-############################
+#############################
+# Normality Assumption
+#############################
 
-# H0: Normal dağılım varsayımı sağlanmaktadır.
-# H1:..sağlanmamaktadır.
+# H0: Normal distribution assumption is met.
+# H1:..not provided.
 
-# Normal dagılım kontrolu için sigara içenler için
+# For smokers to check normal distribution
 test_stat, pvalue = shapiro(df.loc[df["smoker"] == "Yes", "total_bill"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# p-value < ise 0.05'ten HO RED.
-# p-value < değilse 0.05 H0 REDDEDILEMEZ.
+# HO RED from 0.05 if p-value <.
+# If p-value is not < 0.05 H0 CANNOT BE REJECTED.
 
-# Normal dagılım kontrolu için sigara içmeyenler için
+# For non-smokers to check normal distribution
 test_stat, pvalue = shapiro(df.loc[df["smoker"] == "No", "total_bill"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# Her ikiside normal dağılıma uymadı.H0 RED ETTI
+# Both did not comply with the normal distribution. H0 REJECTED
 
-# Normallik Varsayım sağlanmadıgı için nun parametrık bır test kullanmalıyız
+# Since the Normality Assumption is not satisfied, we must use a parametric test.
 
-############################
-# Varyans Homojenligi Varsayımı
-############################
+#############################
+# Homogeneity of Variance Assumption
+#############################
 
-# H0: Varyanslar Homojendir
-# H1: Varyanslar Homojen Değildir
+# H0: Variances are Homogeneous
+# H1: Variances Are Not Homogeneous
 
-# Varyans Homejenliği için levene testi ile iki farklı gruba göre kontrol yapar.
+# It checks for homogeneity of variance according to two different groups with the Levene test.
 
 test_stat, pvalue = levene(df.loc[df["smoker"] == "Yes", "total_bill"],
-                           df.loc[df["smoker"] == "No", "total_bill"])
+                            df.loc[df["smoker"] == "No", "total_bill"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# Varyans Homojenliği durumuda sağlanmadı bu da rededildi.
+# Variance Homogeneity was not achieved and this was also rejected.
 
-# p-value < ise 0.05 'ten HO RED.
-# p-value < değilse 0.05 H0 REDDEDILEMEZ.
+# HO RED if p-value < 0.05.
+# If p-value is not < 0.05 H0 CANNOT BE REJECTED.
 
 
-############################
-# 3 ve 4. Hipotezin Uygulanması
-############################
+#############################
+#3 and 4. Application of Hypothesis
+#############################
 
-# 1. Varsayımlar sağlanıyorsa bağımsız iki örneklem t testi (parametrik test)
-# 2. Varsayımlar sağlanmıyorsa mannwhitneyu testi (non-parametrik test)
+# 1. If the assumptions are met, independent two-sample t-test (parametric test)
+# 2. Mannwhitneyu test (non-parametric test) if the assumptions are not met
 
-############################
-# 1.1 Varsayımlar sağlanıyorsa bağımsız iki örneklem t testi (parametrik test)
-############################
+#############################
+# 1.1 Independent two-sample t-test (parametric test) if assumptions are met
+#############################
 
-# Eğer normallik varsayımı sağlanıyorsa kullanılabilen ttest metodu.
-# Sadece eger varyans homojenlıgı saglanmıyorsa (equal_var=False) girilir.
+# The t test method that can be used if the assumption of normality is met.
+# It is entered only if variance homogeneity is not ensured (equal_var=False).
 
 test_stat, pvalue = ttest_ind(df.loc[df["smoker"] == "Yes", "total_bill"],
-                              df.loc[df["smoker"] == "No", "total_bill"],
-                              equal_var=True)
+                               df.loc[df["smoker"] == "No", "total_bill"],
+                               equal_var=True)
 
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# p-value < ise 0.05 'ten HO RED.
-# p-value < değilse 0.05 H0 REDDEDILEMEZ.
+# HO RED if p-value < 0.05.
+# If p-value is not < 0.05 H0 CANNOT BE REJECTED.
 
-############################
-# 1.2 Varsayımlar sağlanmıyorsa mannwhitneyu testi (non-parametrik test)
-############################
-# HO rededilemedi.
+#############################
+# 1.2 Mannwhitneyu test if assumptions are not met (non-parametric test)
+#############################
+# HO could not be rejected.
 
-# nunprametrık ortalama kıyaslama medyan kıyaslama testıdır
+# nunprametric mean benchmark median benchmark
 test_stat, pvalue = mannwhitneyu(df.loc[df["smoker"] == "Yes", "total_bill"],
-                                 df.loc[df["smoker"] == "No", "total_bill"])
+                                  df.loc[df["smoker"] == "No", "total_bill"])
 
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 
 
-############################
-# Uygulama 2: Titanic Kadın ve Erkek Yolcuların Yaş Ortalamaları Arasında İstatistiksel Olarak Anl. Fark. var mıdır?
-############################
+#############################
+# Application 2: Statistical Significance Between the Average Ages of Titanic Female and Male Passengers. Difference. are there?
+#############################
 
 df = sns.load_dataset("titanic")
 df.head()
 
 df.groupby("sex").agg({"age": "mean"})
-# Fark var gibi gözüküyor bu fark şans eseri ortaya cıkmıs olabilir mi
+# There seems to be a difference. Could this difference have occurred by chance?
 
 
-# 1. Hipotezleri kur:
-# H0: M1  = M2 (Kadın ve Erkek Yolcuların Yaş Ortalamaları Arasında İstatistiksel Olarak Anl. Fark. Yoktur)
-# H1: M1! = M2 (eşit değildir)  (Kadın ve Erkek Yolcuların Yaş Ortalamaları Arasında İstatistiksel Olarak Anl. Fark.vardır)
-# M1 ve M2=Ana kitle ortalamasının temsilleri.
+# 1. Establish hypotheses:
+# H0: M1 = M2 (There is no statistically significant difference between the average ages of female and male passengers)
+#H1:M1! = M2 (not equal) (There is a statistically significant difference between the average ages of female and male passengers)
+# M1 and M2=Representations of the population average.
 
 
-# 2. Varsayımları İncele
+# 2. Examine Assumptions
 
-# Normallik varsayımı
-# H0: Normal dağılım varsayımı sağlanmaktadır.
-# H1:..sağlanmamaktadır
+# Normality assumption
+# H0: Normal distribution assumption is met.
+# H1:..not provided
 
 test_stat, pvalue = shapiro(df.loc[df["sex"] == "female", "age"].dropna())
-print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))  #HO:REDEDİLİR
+print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue)) #HO:REJECTED
 
 test_stat, pvalue = shapiro(df.loc[df["sex"] == "male", "age"].dropna())
-print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue)) #HO:REDEDİLİR
+print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue)) #HO:REJECTED
 
-# İki grup içinde varsayım saglanmamaktadır.
+# No assumptions are made for the two groups.
 
-# Varyans homojenliği
-# H0: Varyanslar Homojendir
-# H1: Varyanslar Homojen Değildir
+# Homogeneity of variance
+# H0: Variances are Homogeneous
+# H1: Variances Are Not Homogeneous
 
 test_stat, pvalue = levene(df.loc[df["sex"] == "female", "age"].dropna(),
-                           df.loc[df["sex"] == "male", "age"].dropna())
+                            df.loc[df["sex"] == "male", "age"].dropna())
 
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# H0:Küçük olmadığı için Red edemedik.Bunun anlamı varyanslar homojendir.
+# H0: We could not reject it because it was not small. This means that the variances are homogeneous.
 
-# Varsayımlar sağlanmadığı için nonparametrik
+# Nonparametric as assumptions are not met
 
 test_stat, pvalue = mannwhitneyu(df.loc[df["sex"] == "female", "age"].dropna(),
-                                 df.loc[df["sex"] == "male", "age"].dropna())
+                                  df.loc[df["sex"] == "male", "age"].dropna())
 
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# H0: Red ed,yorum.Kadın ve erkek yolcuların yas ortalamaları arasında gözlediğimiz
-# fark istatistiki olarak da vardır.Fark var ve gorduk!
+# H0: Reject, comment. What we observed between the age averages of male and female passengers
+# the difference is also statistically significant. There is a difference and we saw it!
 
-# 90 280
+#90 280
 
 
-############################
-# Uygulama 3: Diyabet Hastası Olan ve Olmayanların Yaşları Ort. Arasında İst. Ol. Anl. Fark var mıdır?
-############################
+#############################
+# Application 3: Average Ages of People with and without Diabetes. Between Ist. Be. Anl. Is there any difference?
+#############################
 
-df = pd.read_csv("Olcum Problemleri/datasets/diabetes.csv")
+df = pd.read_csv("Measurement Problems/datasets/diabetes.csv")
 df.head()
 
 df.groupby("Outcome").agg({"Age": "mean"})
 
-# 1. Hipotezleri kur
-# H0: M1 = M2
-# Diyabet Hastası Olan ve Olmayanların Yaşları Ort. Arasında İst. Ol. Anl. Fark Yoktur
+# 1. Set up hypotheses
+#H0:M1=M2
+# Average Ages of People with and without Diabetes. Between Ist. Be. Anl. There Is No Difference
 # H1: M1 != M2
-# .... vardır.
+# .... has.
 
-# 2. Varsayımları İncele
+#2. Examine Assumptions
 
-# Normallik Varsayımı (H0: Normal dağılım varsayımı sağlanmaktadır.)
+# Normality Assumption (H0: Normal distribution assumption is met.)
 test_stat, pvalue = shapiro(df.loc[df["Outcome"] == 1, "Age"].dropna())
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
@@ -286,30 +286,30 @@ print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 
 
-# Normallik varsayımı sağlanmadığı için nonparametrik.
-# Medyan kıyaslaması olarak cıkar yada sıralama kıyaslaması
-# H0: reddedilir.
+# Nonparametric because normality assumption is not met.
+# Output as median comparison or ranking comparison
+# H0: rejected.
 
-# Hipotez (H0: M1 = M2)
+# Hypothesis (H0: M1 = M2)
 test_stat, pvalue = mannwhitneyu(df.loc[df["Outcome"] == 1, "Age"].dropna(),
-                                 df.loc[df["Outcome"] == 0, "Age"].dropna())
+                                  df.loc[df["Outcome"] == 0, "Age"].dropna())
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 
-###################################################
-# İş Problemi: Kursun Büyük Çoğunluğunu İzleyenler ile İzlemeyenlerin Puanları Birbirinden Farklı mı?
-###################################################
+####################### #
+# Business Problem: Are the scores of those who watched the majority of the course different from those who did not?
+####################### #
 
-# H0: M1 = M2 (... iki grup ortalamaları arasında ist ol.anl.fark yoktur.)
-# H1: M1 != M2 (...vardır)
+# H0: M1 = M2 (... there is no significant difference between the two group averages.)
+# H1: M1 != M2 (...exists)
 
-df = pd.read_csv("Olcum Problemleri/datasets/course_reviews.csv")
+df = pd.read_csv("Measurement Problems/datasets/course_reviews.csv")
 df.head()
 
-# İlerlemesi %75 ten fazla olan kursiyerler
+# Trainees whose progress is more than 75%
 df[(df["Progress"] > 75)]["Rating"].mean()
 
-# İlerlemesi %25 ten fazla olan kursiyerler
+# Trainees whose progress is more than 25%
 df[(df["Progress"] < 25)]["Rating"].mean()
 
 
@@ -322,38 +322,39 @@ print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 
 test_stat, pvalue = mannwhitneyu(df[(df["Progress"] > 75)]["Rating"],
-                                 df[(df["Progress"] < 25)]["Rating"])
+                                  df[(df["Progress"] < 25)]["Rating"])
 
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-######################################################
-# AB Testing (İki Örneklem Oran Testi)
-######################################################
+####################### ####
+# AB Testing (Two Sample Proportion Test)
+####################### ####
 
-# H0: p1 = p2
-# Yeni Tasarımın Dönüşüm Oranı ile Eski Tasarımın Dönüşüm Oranı Arasında İst. Ol. Anlamlı Farklılık Yoktur.
+#H0:p1=p2
+# There is no statistically significant difference between the conversion rate of the new design and the conversion rate of the old design.
 # H1: p1 != p2
-# ... vardır
+# ... has
 
-# Her iki grubu ayrı arraya koyuyoruz
-basari_sayisi = np.array([300, 250])
-gozlem_sayilari = np.array([1000, 1100])
+# We put both groups in separate arrays
+number_successes = np.array([300, 250])
+observation_number = np.array([1000, 1100])
 
-# Kıyaslama metodu ile işlemi yapıyoruz
-proportions_ztest(count=basari_sayisi, nobs=gozlem_sayilari)
-# H0 red ediyoruz.H1 İKİ ORAN ARASINDA İSTATİKSEL OLARAK ORAN ANLAMNINDA FARKLILIK VARDIR.
+# We perform the process using the comparison method
+proportions_ztest(count=success_sayisi, nobs=observation_counts)
+# We reject H0
+# H1 THERE IS A STATISTICAL DIFFERENCE BETWEEN THE TWO RATIOS.
 
-basari_sayisi / gozlem_sayilari
+number of successes / number of observations
 
-############################
-# Uygulama: Kadın ve Erkeklerin Hayatta Kalma Oranları Arasında İst. Olarak An. Farklılık var mıdır?
-############################
+#############################
+# Application: Is There a Statistically Significant Difference Between the Survival Rates of Men and Women?
+#############################
 
 # H0: p1 = p2 (p1-p2=0)
-# Kadın ve Erkeklerin Hayatta Kalma Oranları Arasında İst. Olarak An. Fark yoktur
+# No Statistically Significant Difference Between Survival Rates of Women and Men
 
 # H1: p1 != p2
-# .. vardır
+# .. has
 
 df = sns.load_dataset("titanic")
 df.head()
@@ -362,110 +363,108 @@ df.loc[df["sex"] == "female", "survived"].mean()
 
 df.loc[df["sex"] == "male", "survived"].mean()
 
-# Bu oranlar için proportions testi için ilk argumanına basarı sayısını  ikinci argumunanına gözlem sayısını ıstıyor.
+# For these proportions, the first argument for the proportions test requires the number of successes and the second argument requires the number of observations.
 
 female_succ_count = df.loc[df["sex"] == "female", "survived"].sum()
 male_succ_count = df.loc[df["sex"] == "male", "survived"].sum()
 
 test_stat, pvalue = proportions_ztest(count=[female_succ_count, male_succ_count],
-                                      nobs=[df.loc[df["sex"] == "female", "survived"].shape[0],
-                                            df.loc[df["sex"] == "male", "survived"].shape[0]])
+                                       nobs=[df.loc[df["sex"] == "female", "survived"].shape[0],
+                                             df.loc[df["sex"] == "male", "survived"].shape[0]])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# Kadın ve erkeklerın hayatta kalma oranları arasında farkı degerlendırdık.
-# H0 Reddedilir.Anlamlı bir farklılık yoktur
-# H1 Anlamlı bir farklılık vardır.
+# We evaluated the difference between the survival rates of men and women.
+# H0 Rejected. There is no significant difference
+# H1 There is a significant difference.
 
-######################################################
+####################### ####
 # ANOVA (Analysis of Variance)
-######################################################
+####################### ####
 
-# İkiden fazla grup ortalamasını karşılaştırmak için kullanılır.
+# Used to compare more than two group averages.
 
 df = sns.load_dataset("tips")
 df.head()
 
 df.groupby("day")["total_bill"].mean()
 
-# 1. Hipotezleri kur
+# 1. Set up hypotheses
 
 # HO: m1 = m2 = m3 = m4
-# Grup ortalamaları arasında fark yoktur.
+# There is no difference between group averages.
 
-# H1: .. fark vardır
+# H1: .. there is a difference
 
-# 2. Varsayım kontrolü
+#2. Assumption check
 
-# Normallik varsayımı
-# Varyans homojenliği varsayımı
+# Normality assumption
+# Assumption of homogeneity of variance
 
-# Varsayım sağlanıyorsa one way anova
-# Varsayım sağlanmıyorsa kruskal
+# If the assumption is met, one way anova
+# If the assumption is not met, kruskal
 
-# H0: Normal dağılım varsayımı sağlanmaktadır.
+# H0: Normal distribution assumption is met.
 
-# Öyle bir işlem olsun verisetindeki day degıskenını fıltrelemıs olalım ve sonra da shapiro testi yapalım.
-# Bir kategorik değişkenin sınıfları üzerinde gezebilecek itaratif bir nesneye çevirdik (Listeye)
+# Let's do such an operation, let's filter the day variable in the dataset and then do the Shapiro test.
+# We turned it into an iterative object that can navigate over the classes of a categorical variable (to a list).
 
 for group in list(df["day"].unique()):
-    pvalue = shapiro(df.loc[df["day"] == group, "total_bill"])[1]
-    print(group, 'p-value: %.4f' % pvalue)
+     pvalue = shapiro(df.loc[df["day"] == group, "total_bill"])[1]
+     print(group, 'p-value: %.4f' % pvalue)
 
-# --Hepsi için p değeri 0.05 den kucuk oldugu ıcın H0 red edilir.
-# --Hiç birisi için normallik varsayımı saglanmamaktadır:
+# --H0 is rejected because the p value is less than 0.05 for all of them.
+# --No normality assumption is provided for any of them:
 
 
-# H0: Varyans homojenliği varsayımı sağlanmaktadır.
-# 4 grup için levene metodu
+# H0: The assumption of variance homogeneity is satisfied.
+# Levene method for 4 groups
 
 test_stat, pvalue = levene(df.loc[df["day"] == "Sun", "total_bill"],
-                           df.loc[df["day"] == "Sat", "total_bill"],
-                           df.loc[df["day"] == "Thur", "total_bill"],
-                           df.loc[df["day"] == "Fri", "total_bill"])
+                            df.loc[df["day"] == "Sell", "total_bill"],
+                            df.loc[df["day"] == "Thur", "total_bill"],
+                            df.loc[df["day"] == "Fri", "total_bill"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
-# H0 reddedilemez varyans homojenlıgı saglanmaktadır.
+# H0 irrefutable variance homogeneity is ensured.
 
 
-# 3. Hipotez testi ve p-value yorumu
+#3. Hypothesis testing and p-value interpretation
 
-# Hiç biri sağlamıyor.
+# None of them provide it.
 df.groupby("day").agg({"total_bill": ["mean", "median"]})
 
-# Medianlarda farklılık var kayda degermı tam bılmıoruz.
-# Bu gruplar arasında fark varmı yokmu test etmek ıle grupların ayrı ayrı ortalamaları arası test ayrı bır sey
+# There is a difference in medians, we do not know whether it is significant or not.
+# Testing whether there is a difference between these groups and testing the averages of the groups are different things.
 
-# HO: Grup ortalamaları arasında istatiksel olarak anlamlı farklılık yoktur
+# HO: There is no statistically significant difference between group averages
 
-# Varsayım Sağlanıyorsa tek yönlü parametrık test kullanacagız
-# parametrik anova testi:
+# If the assumption is met, we will use one-way parametric testing
+# parametric anova test:
 f_oneway(df.loc[df["day"] == "Thur", "total_bill"],
          df.loc[df["day"] == "Fri", "total_bill"],
          df.loc[df["day"] == "Sat", "total_bill"],
          df.loc[df["day"] == "Sun", "total_bill"])
-# p value degerı 0.05 den kucuk H0 red edilir.
-# Dogal olarak gruplar arasında anlamlı bir farklılık vardır.
+# H0 with a p value less than 0.05 is rejected.
+# Naturally, there is a significant difference between the groups.
+# These assumptions were not met, let's use nonparamatric instead of parametric
+# Nonparametric anova test:
+ kruskal(df.loc[df["day"] == "Thur", "total_bill"],
+                 df.loc[df["day"] == "Fri", "total_bill"],
+                 df.loc[df["day"] == "Sell", "total_bill"],
+                 df.loc[df["day"] == "Sun", "total_bill"])
 
-# Bu varsayımlar saglanmamıstı parametrık yerine nonparamatrik kullanalım
-# Nonparametrik anova testi:
-kruskal(df.loc[df["day"] == "Thur", "total_bill"],
-        df.loc[df["day"] == "Fri", "total_bill"],
-        df.loc[df["day"] == "Sat", "total_bill"],
-        df.loc[df["day"] == "Sun", "total_bill"])
-
-# p value deger 0.05 den kucuk H0 red edilir.
-# Görüyoruz ki bu grupların arasında anlamlı bir farklılık vardır.
-
-# Evet fark var ama fark kımden neyden hangı gruptan kaynaklanıyor.
+# H0 with p value less than 0.05 is rejected.
+# We see that there is a significant difference between these groups.
+# # Yes, there is a difference, but the difference comes from who, what and which group.
 
 from statsmodels.stats.multicomp import MultiComparison
 comparison = MultiComparison(df['total_bill'], df['day'])
 tukey = comparison.tukeyhsd(0.05)
 print(tukey.summary())
 
-# Istatıstıkı olarak ıkılı karsılastırma ıle kayda deger bır farklılık bulunamadı.Ama gruba komple bakınca fark vardı.
-# Alfa degerı ıle oyannabılır kıyaslancak deger ıcın ayarlama olabılır.
-# Fark yokmus mualamesı yapılabılır.
+# Statistically, no significant difference was found by pairwise comparison. But when we looked at the group as a whole, there was a difference.
+# The alpha value can be changed and adjusted for a comparable value.
+# It can be assumed that there is no difference.
 
 
 

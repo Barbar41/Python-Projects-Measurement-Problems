@@ -1,79 +1,79 @@
 #### AB TESTING
 
-# Basic Statistics Concepts
+1-Basic Statistics Concepts
 
-# Sampling
+2-Sampling
 
-# Descriptive Statistics
+3-Descriptive Statistics
 
-# Correlation
+4-Correlation
 
-# Establish Hypothesis
+5-Establish Hypothesis
 
-# Assumption Checking
+6-Assumption Checking
 
-# Normality Assumption
+7-Normality Assumption
 
-# Homogeneity of Variance Assumption
+8-Homogeneity of Variance Assumption
 
-# 3 and 4. Application of Hypothesis
+9-3 and 4. Application of Hypothesis
 
-# 1.1 Independent two-sample t-test (parametric test) if assumptions are met
+10-1.1 Independent two-sample t-test (parametric test) if assumptions are met
 
-# 1.2 Mannwhitneyu test if assumptions are not met (non-parametric test)
+11-1.2 Mannwhitneyu test if assumptions are not met (non-parametric test)
 
-# Business Problem: Are the scores of those who watched the majority of the course different from those who did not?
+12-Business Problem: Are the scores of those who watched the majority of the course different from those who did not?
 
-# AB Testing (Two Sample Proportion Test)
+13-AB Testing (Two Sample Proportion Test)
 
-# ANOVA (Analysis of Variance)
+14-ANOVA (Analysis of Variance)
 
 ########################################
 #### RATING PRODUCTS
 
-# Application: User and Time Weighted Course Score Calculation
+1-Application: User and Time Weighted Course Score Calculation
 
-# Average
+2-Average
 
-# Time-Based Weighted Average
+3-Time-Based Weighted Average
 
-# User-Based Weighted Average
+4-User-Based Weighted Average
 
-# Weighted Rating
+5-Weighted Rating
 
 #######################################
 #### SORTING REVIEWS
 
-# Up-Down Diff Score = (up ratings) − (down ratings)
+1-Up-Down Diff Score = (up ratings) − (down ratings)
 
-# Score = Average rating = (up ratings) / (all ratings)
+2-Score = Average rating = (up ratings) / (all ratings)
 
-# Wilson Lower Bound Score
+3-Wilson Lower Bound Score
 
-# CaseStudy
+4-CaseStudy
 
 #######################################
 #### SORTING PRODUCTS
 
-# Application: Course Sorting
+1-Application: Course Sorting
 
-# Sorting by Rating
+2-Sorting by Rating
 
-# Sorting by Comment Count or Purchase Count
+3-Sorting by Comment Count or Purchase Count
 
-# Sorting by Rating, Comment and Purchase
+4-Sorting by Rating, Comment and Purchase
 
-# Bayesian Average Rating Score
+5-Bayesian Average Rating Score
 
-# Hybrid Sorting: BAR Score + Other Factors
+6-Hybrid Sorting: BAR Score + Other Factors
 
-# Application: IMDB Movie Scoring & Sorting
+7-Application: IMDB Movie Scoring & Sorting
 
-# Sorting by Vote Average
+8-Sorting by Vote Average
 
-# IMDB Weighted Rating
+9-IMDB Weighted Rating
 
-# Bayesian Average Rating Score
+10-Bayesian Average Rating Score
 
 
 
